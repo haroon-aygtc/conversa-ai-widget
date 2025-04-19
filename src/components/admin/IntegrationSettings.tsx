@@ -79,7 +79,7 @@ const IntegrationSettings = () => {
                   <div>
                     <h3 className="text-base font-medium">Embed Code</h3>
                     <p className="text-sm text-gray-500">
-                      Copy this code snippet and paste it before the closing </body> tag on your website
+                      Copy this code snippet and paste it before the closing &lt;/body&gt; tag on your website
                     </p>
                   </div>
                   <Button variant="outline" className="flex items-center gap-1">
