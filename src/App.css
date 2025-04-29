@@ -19,6 +19,31 @@ body, #root {
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
+/* Admin layout classes */
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  max-width: 100%;
+}
+
+.admin-main {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 1rem;
+  }
+}
+
 /* Custom Badge variants */
 .badge-success {
   @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300;
