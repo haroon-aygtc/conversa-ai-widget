@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { generateWidgetConfig } from "@/utils/widgetSettings";
 import { AppearanceSettings } from "@/components/admin/settings/AppearanceSettings";
 import { BehaviorSettings } from "@/components/admin/settings/BehaviorSettings";
@@ -22,6 +23,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
+import { toast } from "@/components/ui/use-toast";
 
 import {
   BrainCircuit,
@@ -34,12 +36,55 @@ import {
 } from "lucide-react";
 
 const Admin = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [config, setConfig] = useState(generateWidgetConfig({
     widgetId: "widget_demo123"
   }));
 
+  // Default to dashboard if no hash is present
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [activeSubSection, setActiveSubSection] = useState("appearance");
+  const [activeSubSection, setActiveSubSection] = useState("");
+
+  // Parse the URL on mount and when location changes
+  useEffect(() => {
+    const hash = location.hash.substring(1); // Remove the # character
+    if (hash) {
+      const [section, subSection] = hash.split('/');
+      
+      setActiveSection(section || 'dashboard');
+      if (subSection) {
+        setActiveSubSection(subSection);
+      } else {
+        // Set default subsection based on section
+        setDefaultSubSection(section);
+      }
+    } else if (location.pathname === '/admin') {
+      // Default to dashboard
+      setActiveSection('dashboard');
+      setActiveSubSection('');
+      navigate('/admin#dashboard', { replace: true });
+    }
+  }, [location, navigate]);
+
+  const setDefaultSubSection = (sectionId: string) => {
+    switch (sectionId) {
+      case 'settings':
+        setActiveSubSection('appearance');
+        break;
+      case 'ai':
+        setActiveSubSection('prompts');
+        break;
+      case 'content':
+        setActiveSubSection('templates');
+        break;
+      case 'customize':
+        setActiveSubSection('branding');
+        break;
+      default:
+        setActiveSubSection('');
+    }
+  };
 
   const updateConfig = (path: string, value: any) => {
     const newConfig = { ...config };
@@ -52,30 +97,27 @@ const Admin = () => {
     
     current[keys[keys.length - 1]] = value;
     setConfig(newConfig);
+    
+    // Show success toast
+    toast({
+      title: "Settings updated",
+      description: "Your changes have been saved successfully.",
+    });
   };
 
   const handleMenuItemClick = (sectionId: string, subSectionId?: string) => {
     setActiveSection(sectionId);
+    
+    // If subsection is provided, use it; otherwise set default based on section
     if (subSectionId) {
       setActiveSubSection(subSectionId);
+      navigate(`/admin#${sectionId}/${subSectionId}`);
     } else {
-      // Set default sub-section based on section
-      switch (sectionId) {
-        case 'settings':
-          setActiveSubSection('appearance');
-          break;
-        case 'ai':
-          setActiveSubSection('prompts');
-          break;
-        case 'content':
-          setActiveSubSection('templates');
-          break;
-        case 'customize':
-          setActiveSubSection('branding');
-          break;
-        default:
-          setActiveSubSection('');
-      }
+      // For sections without subsections
+      navigate(`/admin#${sectionId}`);
+      
+      // Set default subsection if applicable
+      setDefaultSubSection(sectionId);
     }
   };
 

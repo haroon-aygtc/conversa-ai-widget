@@ -43,6 +43,16 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const location = useLocation();
+  const { state, isMobile, setOpenMobile } = useSidebar();
+
+  const handleMenuItemClick = (sectionId: string, subSectionId?: string) => {
+    onMenuItemClick(sectionId, subSectionId);
+    
+    // Close mobile sidebar after navigation
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   const menuItems = [
     { 
@@ -134,7 +144,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 <SidebarMenuItem>
                   <SidebarMenuButton 
                     isActive={activeSection === item.id}
-                    onClick={() => onMenuItemClick(item.id)}
+                    onClick={() => handleMenuItemClick(item.id)}
                     tooltip={item.label}
                   >
                     <item.icon className="h-5 w-5" />
@@ -146,7 +156,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       <SidebarMenuSubItem key={subMenu.id}>
                         <SidebarMenuSubButton
                           isActive={activeSection === item.id && activeSubSection === subMenu.id}
-                          onClick={() => onMenuItemClick(item.id, subMenu.id)}
+                          onClick={() => handleMenuItemClick(item.id, subMenu.id)}
                         >
                           <span>{subMenu.label}</span>
                           {subMenu.badge && <Badge className="ml-auto">{subMenu.badge}</Badge>}
@@ -159,7 +169,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     isActive={activeSection === item.id}
-                    onClick={() => onMenuItemClick(item.id)}
+                    onClick={() => handleMenuItemClick(item.id)}
                     tooltip={item.label}
                   >
                     <item.icon className="h-5 w-5" />

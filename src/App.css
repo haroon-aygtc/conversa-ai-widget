@@ -57,6 +57,11 @@ body, #root {
   @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300;
 }
 
+/* Active navigation states */
+.sidebar-nav-active {
+  @apply bg-primary/10 text-primary font-medium;
+}
+
 /* Keep other animations and utility classes */
 .logo {
   height: 6em;
