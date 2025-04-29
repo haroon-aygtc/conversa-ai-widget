@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import { generateWidgetConfig } from "@/utils/widgetSettings";
 import { AppearanceSettings } from "@/components/admin/settings/AppearanceSettings";
 import { BehaviorSettings } from "@/components/admin/settings/BehaviorSettings";
@@ -42,30 +43,33 @@ const Admin = () => {
     widgetId: "widget_demo123"
   }));
 
-  // Default to dashboard if no hash is present
+  // Default to dashboard if no path is present
   const [activeSection, setActiveSection] = useState("dashboard");
   const [activeSubSection, setActiveSubSection] = useState("");
 
-  // Parse the URL on mount and when location changes
+  // Parse the URL path on mount and when location changes
   useEffect(() => {
-    const hash = location.hash.substring(1); // Remove the # character
-    if (hash) {
-      const [section, subSection] = hash.split('/');
+    // Extract the path after /admin/
+    const path = location.pathname.replace('/admin/', '');
+    
+    if (path) {
+      const segments = path.split('/');
+      const section = segments[0] || 'dashboard';
       
-      setActiveSection(section || 'dashboard');
-      if (subSection) {
-        setActiveSubSection(subSection);
+      setActiveSection(section);
+      if (segments.length > 1 && segments[1]) {
+        setActiveSubSection(segments[1]);
       } else {
         // Set default subsection based on section
         setDefaultSubSection(section);
       }
-    } else if (location.pathname === '/admin') {
-      // Default to dashboard
+    } else {
+      // Default to dashboard for /admin
       setActiveSection('dashboard');
       setActiveSubSection('');
-      navigate('/admin#dashboard', { replace: true });
+      navigate('/admin/dashboard', { replace: true });
     }
-  }, [location, navigate]);
+  }, [location.pathname, navigate]);
 
   const setDefaultSubSection = (sectionId: string) => {
     switch (sectionId) {
@@ -111,10 +115,10 @@ const Admin = () => {
     // If subsection is provided, use it; otherwise set default based on section
     if (subSectionId) {
       setActiveSubSection(subSectionId);
-      navigate(`/admin#${sectionId}/${subSectionId}`);
+      navigate(`/admin/${sectionId}/${subSectionId}`);
     } else {
       // For sections without subsections
-      navigate(`/admin#${sectionId}`);
+      navigate(`/admin/${sectionId}`);
       
       // Set default subsection if applicable
       setDefaultSubSection(sectionId);
