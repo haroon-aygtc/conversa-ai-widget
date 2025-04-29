@@ -1,9 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import { generateWidgetConfig } from "@/utils/widgetSettings";
-
-// Import all required components explicitly
 import { AppearanceSettings } from "@/components/admin/settings/AppearanceSettings";
 import { BehaviorSettings } from "@/components/admin/settings/BehaviorSettings";
 import { MessagesSettings } from "@/components/admin/settings/MessagesSettings";
@@ -25,7 +22,6 @@ import UserManagement from "@/components/admin/users/UserManagement";
 import Dashboard from "@/components/admin/dashboard/Dashboard";
 import EmbedCode from "@/components/widget/EmbedCode";
 import WidgetPreview from "@/components/widget/WidgetPreview";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -84,19 +80,19 @@ const Admin = () => {
     switch (sectionId) {
       case 'settings':
         setActiveSubSection('appearance');
-        navigate(`/admin/settings/appearance`, { replace: true });
+        navigate(`/admin/${sectionId}/appearance`, { replace: true });
         break;
       case 'ai':
         setActiveSubSection('prompts');
-        navigate(`/admin/ai/prompts`, { replace: true });
+        navigate(`/admin/${sectionId}/prompts`, { replace: true });
         break;
       case 'content':
         setActiveSubSection('templates');
-        navigate(`/admin/content/templates`, { replace: true });
+        navigate(`/admin/${sectionId}/templates`, { replace: true });
         break;
       case 'customize':
         setActiveSubSection('branding');
-        navigate(`/admin/customize/branding`, { replace: true });
+        navigate(`/admin/${sectionId}/branding`, { replace: true });
         break;
       default:
         setActiveSubSection('');
@@ -280,10 +276,7 @@ const Admin = () => {
       case 'users':
         return <UserManagement />;
       default:
-        // Fallback for any unhandled section
-        return <div className="flex items-center justify-center h-64 text-xl text-muted-foreground">
-          Select an option from the sidebar
-        </div>;
+        return <div>Select a section from the sidebar</div>;
     }
   };
 
