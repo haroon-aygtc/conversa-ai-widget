@@ -16,6 +16,8 @@ import IntegrationSettings from "@/components/admin/IntegrationSettings";
 import EmbedCode from "@/components/widget/EmbedCode";
 import WidgetPreview from "@/components/widget/WidgetPreview";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -28,6 +30,7 @@ import {
   FileText,
   MessageCircle,
   BookOpen,
+  User
 } from "lucide-react";
 
 const Admin = () => {
