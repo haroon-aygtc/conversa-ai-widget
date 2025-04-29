@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Settings,
@@ -43,9 +43,18 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const { isMobile, setOpenMobile } = useSidebar();
+  const navigate = useNavigate();
 
   const handleMenuItemClick = (sectionId: string, subSectionId?: string) => {
+    // Call the provided callback
     onMenuItemClick(sectionId, subSectionId);
+    
+    // Direct navigation - this ensures we actually navigate to the correct route
+    if (subSectionId) {
+      navigate(`/admin/${sectionId}/${subSectionId}`);
+    } else {
+      navigate(`/admin/${sectionId}`);
+    }
     
     // Close mobile sidebar after navigation
     if (isMobile) {
