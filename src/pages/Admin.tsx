@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import { generateWidgetConfig } from "@/utils/widgetSettings";
@@ -6,6 +7,7 @@ import { BehaviorSettings } from "@/components/admin/settings/BehaviorSettings";
 import { MessagesSettings } from "@/components/admin/settings/MessagesSettings";
 import { ResponsesSettings } from "@/components/admin/settings/ResponsesSettings";
 import { BrandingSettings } from "@/components/admin/settings/BrandingSettings";
+import AdvancedSettings from "@/components/admin/settings/AdvancedSettings";
 import ChatAnalytics from "@/components/admin/ChatAnalytics";
 import KnowledgeBaseUploader from "@/components/admin/KnowledgeBaseUploader";
 import PromptTemplateEditor from "@/components/admin/PromptTemplateEditor";
@@ -14,6 +16,11 @@ import TemplatesManager from "@/components/admin/TemplatesManager";
 import FollowUpManager from "@/components/admin/FollowUpManager";
 import ContextManager from "@/components/admin/ContextManager";
 import IntegrationSettings from "@/components/admin/IntegrationSettings";
+import RoutingSettings from "@/components/admin/ai/RoutingSettings";
+import ThemeManager from "@/components/admin/customize/ThemeManager";
+import WidgetStyles from "@/components/admin/customize/WidgetStyles";
+import UserManagement from "@/components/admin/users/UserManagement";
+import Dashboard from "@/components/admin/dashboard/Dashboard";
 import EmbedCode from "@/components/widget/EmbedCode";
 import WidgetPreview from "@/components/widget/WidgetPreview";
 import { Button } from "@/components/ui/button";
