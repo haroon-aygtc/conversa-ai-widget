@@ -32,6 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { generateWidgetConfig } from "@/utils/widgetSettings";
 import { AppearanceSettings } from "@/components/admin/settings/AppearanceSettings";
 import { BehaviorSettings } from "@/components/admin/settings/BehaviorSettings";
