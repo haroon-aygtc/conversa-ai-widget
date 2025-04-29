@@ -213,6 +213,8 @@ const Admin = () => {
           return <MessagesSettings config={config} onUpdate={updateConfig} />;
         case 'advanced':
           return <AdvancedSettings />;
+        default:
+          return <div>Select a section from the sidebar</div>;
       }
     }
 
@@ -227,6 +229,8 @@ const Admin = () => {
           return <ContextManager />;
         case 'routing':
           return <RoutingSettings />;
+        default:
+          return <div>Select a section from the sidebar</div>;
       }
     }
 
@@ -241,6 +245,8 @@ const Admin = () => {
           return <FollowUpManager />;
         case 'knowledge':
           return <KnowledgeBaseUploader />;
+        default:
+          return <div>Select a section from the sidebar</div>;
       }
     }
 
@@ -253,6 +259,8 @@ const Admin = () => {
           return <ThemeManager />;
         case 'widgets':
           return <WidgetStyles />;
+        default:
+          return <div>Select a section from the sidebar</div>;
       }
     }
 

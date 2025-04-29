@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
   Settings,
@@ -42,8 +42,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onMenuItemClick 
 }) => {
   const [searchQuery, setSearchQuery] = React.useState("");
-  const location = useLocation();
-  const { state, isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const handleMenuItemClick = (sectionId: string, subSectionId?: string) => {
     onMenuItemClick(sectionId, subSectionId);
