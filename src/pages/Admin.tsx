@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -66,6 +65,7 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton
 } from "@/components/ui/sidebar";
+import WidgetCustomization from "@/components/admin/WidgetCustomization";
 
 const Admin = () => {
   const [config, setConfig] = useState(generateWidgetConfig({
@@ -97,13 +97,16 @@ const Admin = () => {
       badge: 'New'
     },
     { 
+      id: 'widget-customization', 
+      icon: Palette, 
+      label: 'Widget Customization',
+      badge: 'Updated'
+    },
+    { 
       id: 'settings', 
       icon: Settings, 
       label: 'Settings',
       subMenus: [
-        { id: 'appearance', label: 'Appearance' },
-        { id: 'behavior', label: 'Behavior' },
-        { id: 'messages', label: 'Messages' },
         { id: 'advanced', label: 'Advanced', badge: 'New' }
       ]
     },
@@ -129,16 +132,6 @@ const Admin = () => {
         { id: 'knowledge', label: 'Knowledge Base' }
       ] 
     },
-    { 
-      id: 'customize', 
-      icon: Palette, 
-      label: 'Customize',
-      subMenus: [
-        { id: 'branding', label: 'Branding' },
-        { id: 'themes', label: 'Themes', badge: 'New' },
-        { id: 'widgets', label: 'Widget Styles' }
-      ]
-    },
     { id: 'analytics', icon: BarChart3, label: 'Analytics' },
     { id: 'integration', icon: Globe, label: 'Integrations', badge: '5' },
     { 
@@ -157,16 +150,13 @@ const Admin = () => {
       // Set default sub-section based on section
       switch (sectionId) {
         case 'settings':
-          setActiveSubSection('appearance');
+          setActiveSubSection('advanced');
           break;
         case 'ai':
           setActiveSubSection('prompts');
           break;
         case 'content':
           setActiveSubSection('templates');
-          break;
-        case 'customize':
-          setActiveSubSection('branding');
           break;
         default:
           setActiveSubSection('');
@@ -289,30 +279,13 @@ const Admin = () => {
       );
     }
 
+    // Widget Customization - New consolidated section
+    if (activeSection === 'widget-customization') {
+      return <WidgetCustomization />;
+    }
+
     // Settings section
     if (activeSection === 'settings') {
-      if (activeSubSection === 'appearance') {
-        return (
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <AppearanceSettings config={config} onUpdate={updateConfig} />
-            </div>
-            <div className="flex flex-col space-y-6">
-              <div className="border rounded-lg p-6 bg-gray-50 dark:bg-gray-900">
-                <h3 className="text-lg font-medium mb-4">Live Preview</h3>
-                <WidgetPreview config={config} />
-              </div>
-              <EmbedCode widgetId="widget_demo123" />
-            </div>
-          </div>
-        );
-      }
-      if (activeSubSection === 'behavior') {
-        return <BehaviorSettings config={config} onUpdate={updateConfig} />;
-      }
-      if (activeSubSection === 'messages') {
-        return <MessagesSettings config={config} onUpdate={updateConfig} />;
-      }
       if (activeSubSection === 'advanced') {
         return (
           <Card>
@@ -472,191 +445,6 @@ const Admin = () => {
       }
       if (activeSubSection === 'knowledge') {
         return <KnowledgeBaseUploader />;
-      }
-    }
-
-    // Customize section
-    if (activeSection === 'customize') {
-      if (activeSubSection === 'branding') {
-        return <BrandingSettings config={config} onUpdate={updateConfig} />;
-      }
-      if (activeSubSection === 'themes') {
-        return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Theme Manager</CardTitle>
-              <CardDescription>Choose from pre-designed themes or create your own</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                  { name: "Modern Clean", colors: ["#ffffff", "#f1f5f9", "#0f172a", "#3b82f6"] },
-                  { name: "Dark Mode", colors: ["#0f172a", "#1e293b", "#f8fafc", "#38bdf8"] },
-                  { name: "Nature", colors: ["#f0fdf4", "#dcfce7", "#166534", "#22c55e"] },
-                  { name: "Corporate", colors: ["#f8fafc", "#f1f5f9", "#0f172a", "#6366f1"] },
-                  { name: "Vibrant", colors: ["#fdf4ff", "#f5d0fe", "#701a75", "#d946ef"] },
-                  { name: "Custom", colors: ["#cbd5e1", "#94a3b8", "#334155", "#475569"] }
-                ].map((theme) => (
-                  <div key={theme.name} className="border rounded-lg overflow-hidden">
-                    <div className="h-32 flex">
-                      {theme.colors.map((color) => (
-                        <div key={color} className="flex-1" style={{ backgroundColor: color }}></div>
-                      ))}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-medium">{theme.name}</h3>
-                      <div className="flex justify-between items-center mt-2">
-                        <Button size="sm" variant="outline">Preview</Button>
-                        <Button size="sm">Apply</Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-8">
-                <h3 className="text-lg font-medium mb-4">Create Custom Theme</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="font-medium">Theme Name</label>
-                      <Input placeholder="E.g., My Brand Theme" />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="font-medium">Primary Color</label>
-                        <div className="flex">
-                          <div className="w-10 h-10 rounded-l-md" style={{ backgroundColor: "#3b82f6" }}></div>
-                          <Input value="#3b82f6" className="rounded-l-none" />
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="font-medium">Secondary Color</label>
-                        <div className="flex">
-                          <div className="w-10 h-10 rounded-l-md" style={{ backgroundColor: "#8b5cf6" }}></div>
-                          <Input value="#8b5cf6" className="rounded-l-none" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="font-medium">Preview</label>
-                    <div className="border rounded-lg p-4 h-[200px] mt-2 flex items-center justify-center">
-                      <p className="text-sm text-muted-foreground">Theme preview will appear here</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex justify-end mt-6">
-                  <Button>Save Custom Theme</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      }
-      if (activeSubSection === 'widgets') {
-        return (
-          <Card>
-            <CardHeader>
-              <CardTitle>Widget Styles</CardTitle>
-              <CardDescription>Configure the visual appearance of your chat widget</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-8">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[
-                    "Bubble",
-                    "Square",
-                    "Full Height",
-                    "Minimalist",
-                    "Rounded",
-                    "Classic",
-                    "Modern",
-                    "Custom"
-                  ].map((style) => (
-                    <div key={style} className="border rounded-lg overflow-hidden">
-                      <div className="h-32 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <MessageSquare className="h-6 w-6 text-primary" />
-                      </div>
-                      <div className="p-3">
-                        <h3 className="text-sm font-medium">{style}</h3>
-                        <Button size="sm" variant="outline" className="w-full mt-2">Select</Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Animation Settings</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="font-medium">Opening Animation</label>
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md">
-                        <option>Fade In</option>
-                        <option>Slide Up</option>
-                        <option>Scale In</option>
-                        <option>Bounce</option>
-                      </select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="font-medium">Closing Animation</label>
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md">
-                        <option>Fade Out</option>
-                        <option>Slide Down</option>
-                        <option>Scale Out</option>
-                        <option>Bounce Out</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Shadow & Effects</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <label className="font-medium">Shadow Intensity</label>
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md">
-                        <option>None</option>
-                        <option>Light</option>
-                        <option>Medium</option>
-                        <option>Strong</option>
-                      </select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="font-medium">Glass Effect</label>
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md">
-                        <option>None</option>
-                        <option>Light Blur</option>
-                        <option>Medium Blur</option>
-                        <option>Strong Blur</option>
-                      </select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="font-medium">Border Style</label>
-                      <select className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md">
-                        <option>Solid</option>
-                        <option>Dashed</option>
-                        <option>Dotted</option>
-                        <option>None</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="pt-4 flex justify-end">
-                  <Button>Save Widget Style</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        );
       }
     }
 
